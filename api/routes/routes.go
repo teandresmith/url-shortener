@@ -110,7 +110,15 @@ func UrlShortener() gin.HandlerFunc{
 			return
 		}
 
-		id := uuid.NewString()[:5]
+		var id string
+
+		if req.CustomShortURL == "" {
+			id = uuid.NewString()[:5]
+		} else {
+			id = req.CustomShortURL
+		}
+
+		
 
 		timeLeft, err := rdb.TTL(database.Ctx, c.ClientIP()).Result()
 		if err != nil {
